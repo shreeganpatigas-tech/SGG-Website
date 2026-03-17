@@ -14,62 +14,71 @@ const item = {
 
 export default function HeroSection() {
   return (
-    <section id="hero" className="relative min-h-svh flex items-center justify-center overflow-hidden">
-      {/* Background */}
+    <section id="hero" className="relative min-h-svh flex items-end overflow-hidden">
+      {/* Background with slow zoom */}
       <motion.div
         className="absolute inset-0"
         initial={{ scale: 1.1 }}
         animate={{ scale: 1 }}
-        transition={{ duration: 8, ease: "easeOut" }}
+        transition={{ duration: 10, ease: "easeOut" }}
       >
-        <img src={heroBg} alt="" className="w-full h-full object-cover" />
+        <img src={heroBg} alt="Industrial gas facility" className="w-full h-full object-cover" />
       </motion.div>
-      <div className="absolute inset-0 bg-gradient-to-b from-background/60 via-background/80 to-background" />
+      {/* Darker overlay for readability — left-heavy gradient */}
+      <div className="absolute inset-0 bg-gradient-to-r from-background/90 via-background/70 to-background/40" />
+      <div className="absolute inset-0 bg-gradient-to-t from-background via-background/30 to-transparent" />
 
-      {/* Content */}
+      {/* Content — left-aligned like reference */}
       <motion.div
         variants={container}
         initial="hidden"
         animate="show"
-        className="relative z-10 max-w-5xl mx-auto text-center px-4"
+        className="relative z-10 max-w-7xl mx-auto w-full px-6 md:px-12 pb-20 md:pb-28 pt-32"
       >
+        {/* Badge */}
         <motion.div variants={item}>
-          <span className="inline-block font-mono text-sm text-primary border border-primary/30 rounded-full px-4 py-1.5 mb-8">
-            27 Years · Zero Safety Incidents
+          <span className="inline-block bg-primary text-primary-foreground font-bold text-xs uppercase tracking-widest px-5 py-2 mb-8">
+            Certified Industrial Excellence
           </span>
         </motion.div>
 
+        {/* Headline */}
         <motion.h1
           variants={item}
-          className="text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-black leading-[0.9] mb-6"
+          className="text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-black leading-[0.95] mb-8 max-w-4xl"
         >
-          Powering Industries.
+          Reliable Industrial &amp;
           <br />
-          <span className="text-gradient-orange">Saving Lives.</span>
+          <span className="text-gradient-orange">Medical Gas Supply.</span>
         </motion.h1>
 
-        <motion.p variants={item} className="text-lg md:text-xl text-muted-foreground max-w-2xl mx-auto mb-10">
-          From high-purity medical oxygen to industrial-grade Argon, we deliver
-          the elements of progress with precision and zero-failure supply.
+        {/* Sub-copy */}
+        <motion.p variants={item} className="text-lg md:text-xl text-muted-foreground max-w-2xl mb-10 leading-relaxed">
+          Powering industries and saving lives with premium quality gases. SGG provides high-purity Oxygen, Argon, and CO₂ with 24/7 logistical support.
         </motion.p>
 
-        <motion.div variants={item} className="flex flex-col sm:flex-row gap-4 justify-center">
-          <Button variant="hero" size="lg" className="px-8 py-6 text-base" asChild>
+        {/* CTAs */}
+        <motion.div variants={item} className="flex flex-col sm:flex-row gap-4">
+          <Button variant="hero" size="lg" className="px-10 py-6 text-sm uppercase tracking-widest font-bold" asChild>
             <a href="#products">
-              Explore Gases <ArrowRight className="ml-2 w-4 h-4" />
+              Explore Products <ArrowRight className="ml-2 w-4 h-4" />
             </a>
           </Button>
-          <Button variant="heroOutline" size="lg" className="px-8 py-6 text-base" asChild>
-            <a href="#contact">Get a Quote</a>
+          <Button variant="heroOutline" size="lg" className="px-10 py-6 text-sm uppercase tracking-widest font-bold" asChild>
+            <a href="#contact">Contact Us</a>
           </Button>
         </motion.div>
 
-        {/* Stats */}
-        <motion.div variants={item} className="mt-16 grid grid-cols-3 gap-8 max-w-lg mx-auto">
+        {/* Stats strip */}
+        <motion.div
+          variants={item}
+          className="mt-16 flex flex-wrap gap-10 border-t border-foreground/10 pt-8"
+        >
           {[
-            { value: "99.99%", label: "Purity" },
-            { value: "24/7", label: "Delivery" },
-            { value: "500+", label: "Clients" },
+            { value: "99.99%", label: "Gas Purity" },
+            { value: "27+", label: "Years Experience" },
+            { value: "500+", label: "Happy Clients" },
+            { value: "24/7", label: "Delivery Support" },
           ].map((s) => (
             <div key={s.label}>
               <div className="font-mono text-2xl md:text-3xl font-bold text-primary">{s.value}</div>
@@ -84,6 +93,7 @@ export default function HeroSection() {
         href="https://wa.me/919876543210"
         target="_blank"
         rel="noopener noreferrer"
+        aria-label="Chat on WhatsApp"
         className="fixed bottom-6 right-6 z-50 bg-[#25D366] text-primary-foreground w-14 h-14 rounded-full flex items-center justify-center shadow-lg animate-pulse-glow hover:scale-110 transition-transform"
       >
         <MessageCircle className="w-6 h-6" />
