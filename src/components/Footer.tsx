@@ -1,4 +1,5 @@
 import { Separator } from "@/components/ui/separator";
+import VisitorCounter from "@/components/VisitorCounter";
 
 const links = [
   { label: "Home", href: "#hero" },
@@ -11,26 +12,37 @@ const links = [
 
 export default function Footer() {
   return (
-    <footer className="px-4 md:px-8 py-12">
+    <footer className="px-4 sm:px-6 md:px-8 py-6 sm:py-10 overflow-hidden">
       <div className="max-w-7xl mx-auto">
-        <Separator className="mb-10 bg-border" />
-        <div className="flex flex-col md:flex-row justify-between items-center gap-6">
-          <div>
-            <span className="font-display font-bold text-xl text-foreground">
+        <Separator className="mb-6 sm:mb-8 bg-white/10" />
+
+        {/* Top row */}
+        <div className="flex flex-col sm:flex-row justify-between items-center gap-4 sm:gap-6 mb-5 sm:mb-6">
+          <div className="text-center sm:text-left">
+            <span className="font-display font-bold text-base sm:text-lg text-white">
               SGG<span className="text-primary">.</span>
             </span>
-            <p className="text-sm text-muted-foreground mt-1">Shree Ganpati Gastech Pvt. Ltd.</p>
+            <p className="text-[10px] sm:text-xs text-white/50 mt-0.5">Shree Ganpati Gastech Pvt. Ltd.</p>
           </div>
 
-          <nav className="flex flex-wrap gap-6">
+          {/* Nav — wrapping flex */}
+          <nav className="flex flex-wrap justify-center gap-x-4 gap-y-1.5 sm:gap-x-5">
             {links.map((l) => (
-              <a key={l.href} href={l.href} className="text-sm text-muted-foreground hover:text-primary transition-colors">
+              <a
+                key={l.href}
+                href={l.href}
+                className="text-[11px] sm:text-xs text-white/60 hover:text-white active:text-white transition-colors"
+              >
                 {l.label}
               </a>
             ))}
           </nav>
+        </div>
 
-          <p className="text-xs text-muted-foreground">
+        {/* Bottom row */}
+        <div className="flex flex-col sm:flex-row justify-between items-center gap-3">
+          <VisitorCounter />
+          <p className="text-[9px] sm:text-[10px] text-white/45">
             © {new Date().getFullYear()} SGG. All rights reserved.
           </p>
         </div>

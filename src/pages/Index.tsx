@@ -6,10 +6,14 @@ import IndustriesSection from "@/components/IndustriesSection";
 import SafetySection from "@/components/SafetySection";
 import ContactSection from "@/components/ContactSection";
 import Footer from "@/components/Footer";
+import BackgroundBubbles from "@/components/BackgroundBubbles";
+import ScrollIndicator from "@/components/ScrollIndicator";
 
 export default function Index() {
   return (
-    <div className="min-h-screen bg-background text-foreground overflow-x-hidden">
+    <div className="min-h-screen bg-background text-foreground overflow-x-hidden relative">
+      <BackgroundBubbles />
+      <ScrollIndicator />
       <SiteHeader />
       <HeroSection />
       <AboutSection />

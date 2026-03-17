@@ -1,82 +1,298 @@
 import { motion } from "framer-motion";
+import { useEffect, useState, useMemo, useRef, useCallback } from "react";
 import { Button } from "@/components/ui/button";
-import { ArrowRight, MessageCircle } from "lucide-react";
+import { ArrowRight, ChevronDown, MessageCircle } from "lucide-react";
 import heroBg from "@/assets/hero-bg.jpg";
 
-const container = {
-  hidden: { opacity: 0 },
-  show: { transition: { staggerChildren: 0.15, delayChildren: 0.3 } },
-};
-const item = {
-  hidden: { opacity: 0, y: 30 },
-  show: { opacity: 1, y: 0, transition: { duration: 0.6, ease: [0.25, 0.1, 0.25, 1] as const } },
-};
+/* ───── detect mobile ───── */
+function useIsMobile() {
+  const [mobile, setMobile] = useState(false);
+  useEffect(() => {
+    const check = () => setMobile(window.innerWidth < 768);
+    check();
+    window.addEventListener("resize", check);
+    return () => window.removeEventListener("resize", check);
+  }, []);
+  return mobile;
+}
 
-export default function HeroSection() {
+/* ───── animated counter ───── */
+function AnimatedValue({ value, suffix = "" }: { value: number; suffix?: string }) {
+  const [display, setDisplay] = useState("0");
+
+  useEffect(() => {
+    const duration = 2200;
+    const startTime = performance.now();
+
+    function tick(now: number) {
+      const elapsed = now - startTime;
+      const progress = Math.min(elapsed / duration, 1);
+      const eased = 1 - Math.pow(1 - progress, 3);
+      const current = eased * value;
+
+      if (suffix === "%") {
+        setDisplay(current.toFixed(2));
+      } else {
+        setDisplay(Math.round(current).toLocaleString());
+      }
+
+      if (progress < 1) requestAnimationFrame(tick);
+    }
+
+    requestAnimationFrame(tick);
+  }, [value, suffix]);
+
   return (
-    <section id="hero" className="relative min-h-svh flex items-center justify-center overflow-hidden">
-      {/* Background */}
+    <span className="font-mono text-xl sm:text-2xl md:text-3xl font-bold text-white">
+      {display}{suffix}
+    </span>
+  );
+}
+
+/* ───── floating particles (fewer on mobile) ───── */
+function Particles({ count = 25 }: { count?: number }) {
+  const particles = useMemo(
+    () =>
+      Array.from({ length: count }, (_, i) => ({
+        id: i,
+        x: Math.random() * 100,
+        delay: Math.random() * 8,
+        duration: 10 + Math.random() * 15,
+        size: 2 + Math.random() * 2,
+        opacity: 0.1 + Math.random() * 0.15,
+      })),
+    [count],
+  );
+
+  return (
+    <div className="absolute inset-0 overflow-hidden pointer-events-none" aria-hidden>
+      {particles.map((p) => (
+        <motion.div
+          key={p.id}
+          className="absolute rounded-full bg-white"
+          style={{
+            width: p.size,
+            height: p.size,
+            left: `${p.x}%`,
+            bottom: "-5%",
+            opacity: 0,
+          }}
+          animate={{
+            y: [0, -1200],
+            x: [0, (Math.random() - 0.5) * 40],
+            opacity: [0, p.opacity, p.opacity, 0],
+          }}
+          transition={{
+            duration: p.duration,
+            delay: p.delay,
+            repeat: Infinity,
+            ease: "linear",
+          }}
+        />
+      ))}
+    </div>
+  );
+}
+
+/* ───── mouse glow (desktop only) ───── */
+function useMouseGlow(ref: React.RefObject<HTMLElement | null>, enabled: boolean) {
+  const [pos, setPos] = useState({ x: 0, y: 0, active: false });
+
+  const handleMove = useCallback((e: MouseEvent) => {
+    if (!ref.current) return;
+    const rect = ref.current.getBoundingClientRect();
+    setPos({ x: e.clientX - rect.left, y: e.clientY - rect.top, active: true });
+  }, [ref]);
+
+  const handleLeave = useCallback(() => {
+    setPos((prev) => ({ ...prev, active: false }));
+  }, []);
+
+  useEffect(() => {
+    if (!enabled) return;
+    const el = ref.current;
+    if (!el) return;
+    el.addEventListener("mousemove", handleMove);
+    el.addEventListener("mouseleave", handleLeave);
+    return () => {
+      el.removeEventListener("mousemove", handleMove);
+      el.removeEventListener("mouseleave", handleLeave);
+    };
+  }, [ref, handleMove, handleLeave, enabled]);
+
+  return pos;
+}
+
+/* ───── stagger-in wrapper for mobile sections ───── */
+export function MobileSlideIn({
+  children,
+  className = "",
+  delay = 0,
+  direction = "up",
+}: {
+  children: React.ReactNode;
+  className?: string;
+  delay?: number;
+  direction?: "up" | "left" | "right";
+}) {
+  const ref = useRef(null);
+  const initial = direction === "up" ? { y: 40 } : direction === "left" ? { x: -40 } : { x: 40 };
+
+  return (
+    <motion.div
+      ref={ref}
+      initial={{ opacity: 0, ...initial }}
+      whileInView={{ opacity: 1, x: 0, y: 0 }}
+      viewport={{ once: true, margin: "-60px" }}
+      transition={{ duration: 0.5, delay, ease: "easeOut" as const }}
+      className={className}
+    >
+      {children}
+    </motion.div>
+  );
+}
+
+/* ───── main hero ───── */
+export default function HeroSection() {
+  const sectionRef = useRef<HTMLElement>(null);
+  const isMobile = useIsMobile();
+  const mouse = useMouseGlow(sectionRef, !isMobile);
+
+  return (
+    <section
+      ref={sectionRef}
+      id="hero"
+      className="relative min-h-svh flex items-center overflow-hidden"
+    >
+      {/* Background image */}
       <motion.div
         className="absolute inset-0"
-        initial={{ scale: 1.1 }}
+        initial={{ scale: 1.08 }}
         animate={{ scale: 1 }}
-        transition={{ duration: 8, ease: "easeOut" }}
+        transition={{ duration: 12, ease: "easeOut" as const }}
       >
         <img src={heroBg} alt="" className="w-full h-full object-cover" />
       </motion.div>
-      <div className="absolute inset-0 bg-gradient-to-b from-background/60 via-background/80 to-background" />
+
+      {/* Dark overlay */}
+      <div className="absolute inset-0 bg-gradient-to-r from-black/85 via-black/70 to-black/40 md:from-black/80 md:via-black/65 md:to-black/40" />
+      <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-background" />
+
+      {/* Mouse glow (desktop only) */}
+      {mouse.active && (
+        <div
+          className="absolute pointer-events-none z-[5] transition-opacity duration-300 hidden md:block"
+          style={{
+            left: mouse.x - 200,
+            top: mouse.y - 200,
+            width: 400,
+            height: 400,
+            background: "radial-gradient(circle, rgba(20,184,166,0.12) 0%, transparent 70%)",
+            borderRadius: "50%",
+          }}
+        />
+      )}
+
+      {/* Particles — fewer on mobile for performance */}
+      <Particles count={isMobile ? 10 : 25} />
 
       {/* Content */}
+      <div className="relative z-10 max-w-7xl mx-auto w-full px-5 sm:px-6 md:px-12 py-24 sm:py-28 md:py-32">
+        <div className="max-w-3xl">
+          {/* Badge */}
+          <motion.div
+            initial={{ opacity: 0, x: -20 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.5, delay: 0.2 }}
+          >
+            <span className="inline-block font-mono text-[10px] sm:text-xs md:text-sm font-bold uppercase tracking-[0.15em] sm:tracking-[0.2em] bg-primary text-white px-4 sm:px-5 py-1.5 sm:py-2 rounded-sm mb-6 sm:mb-8">
+              Certified Industrial Excellence
+            </span>
+          </motion.div>
+
+          {/* Headline */}
+          <motion.h1
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.7, delay: 0.4, ease: "easeOut" as const }}
+            className="text-3xl sm:text-4xl md:text-6xl lg:text-7xl xl:text-8xl font-black leading-[1.05] sm:leading-[1] mb-5 sm:mb-8 text-white"
+          >
+            Reliable Industrial &{" "}
+            <span className="text-gradient-accent">
+              Medical Gas Supply.
+            </span>
+          </motion.h1>
+
+          {/* Description */}
+          <motion.p
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.6, ease: "easeOut" as const }}
+            className="text-sm sm:text-base md:text-lg mb-8 sm:mb-10 max-w-2xl text-white/70"
+          >
+            Powering industries and saving lives with premium quality gases.
+            SGG provides high-purity Oxygen, Argon, and CO₂ with 24/7 logistical support.
+          </motion.p>
+
+          {/* CTAs — stacked on small mobile, row on sm+ */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5, delay: 0.8 }}
+            className="flex flex-col xs:flex-row sm:flex-row gap-3 sm:gap-4 mb-12 sm:mb-16"
+          >
+            <Button
+              variant="hero"
+              size="lg"
+              className="px-6 sm:px-8 py-5 sm:py-6 text-sm sm:text-base font-bold uppercase tracking-wider touch-ripple active:scale-[0.97] transition-transform"
+              asChild
+            >
+              <a href="#products">
+                Explore Products <ArrowRight className="ml-2 w-4 h-4" />
+              </a>
+            </Button>
+            <Button
+              variant="heroOutline"
+              size="lg"
+              className="px-6 sm:px-8 py-5 sm:py-6 text-sm sm:text-base font-bold uppercase tracking-wider touch-ripple active:scale-[0.97] transition-transform"
+              asChild
+            >
+              <a href="#contact">Contact Us</a>
+            </Button>
+          </motion.div>
+
+          {/* Stats */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5, delay: 1.0 }}
+            className="grid grid-cols-3 gap-4 sm:gap-6 max-w-sm sm:max-w-md"
+          >
+            {[
+              { value: 99.99, suffix: "%", label: "Purity" },
+              { value: 27, suffix: "+", label: "Years" },
+              { value: 500, suffix: "+", label: "Clients" },
+            ].map((s) => (
+              <div key={s.label} className="border-l-2 border-primary/50 pl-3 sm:pl-4">
+                <AnimatedValue value={s.value} suffix={s.suffix} />
+                <div className="text-[10px] sm:text-xs text-white/50 mt-1 uppercase tracking-wider font-medium">
+                  {s.label}
+                </div>
+              </div>
+            ))}
+          </motion.div>
+        </div>
+      </div>
+
+      {/* Scroll indicator */}
       <motion.div
-        variants={container}
-        initial="hidden"
-        animate="show"
-        className="relative z-10 max-w-5xl mx-auto text-center px-4"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ delay: 2, duration: 1 }}
+        className="absolute bottom-6 sm:bottom-8 left-1/2 -translate-x-1/2 z-10 flex flex-col items-center gap-1"
       >
-        <motion.div variants={item}>
-          <span className="inline-block font-mono text-sm text-primary border border-primary/30 rounded-full px-4 py-1.5 mb-8">
-            27 Years · Zero Safety Incidents
-          </span>
-        </motion.div>
-
-        <motion.h1
-          variants={item}
-          className="text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-black leading-[0.9] mb-6"
-        >
-          Powering Industries.
-          <br />
-          <span className="text-gradient-orange">Saving Lives.</span>
-        </motion.h1>
-
-        <motion.p variants={item} className="text-lg md:text-xl text-muted-foreground max-w-2xl mx-auto mb-10">
-          From high-purity medical oxygen to industrial-grade Argon, we deliver
-          the elements of progress with precision and zero-failure supply.
-        </motion.p>
-
-        <motion.div variants={item} className="flex flex-col sm:flex-row gap-4 justify-center">
-          <Button variant="hero" size="lg" className="px-8 py-6 text-base" asChild>
-            <a href="#products">
-              Explore Gases <ArrowRight className="ml-2 w-4 h-4" />
-            </a>
-          </Button>
-          <Button variant="heroOutline" size="lg" className="px-8 py-6 text-base" asChild>
-            <a href="#contact">Get a Quote</a>
-          </Button>
-        </motion.div>
-
-        {/* Stats */}
-        <motion.div variants={item} className="mt-16 grid grid-cols-3 gap-8 max-w-lg mx-auto">
-          {[
-            { value: "99.99%", label: "Purity" },
-            { value: "24/7", label: "Delivery" },
-            { value: "500+", label: "Clients" },
-          ].map((s) => (
-            <div key={s.label}>
-              <div className="font-mono text-2xl md:text-3xl font-bold text-primary">{s.value}</div>
-              <div className="text-xs text-muted-foreground mt-1 uppercase tracking-wider">{s.label}</div>
-            </div>
-          ))}
-        </motion.div>
+        <span className="text-[9px] sm:text-[10px] text-white/30 uppercase tracking-[0.3em]">Scroll</span>
+        <ChevronDown className="w-4 h-4 sm:w-5 sm:h-5 text-white/30 animate-scroll-bounce" />
       </motion.div>
 
       {/* WhatsApp FAB */}
@@ -84,9 +300,9 @@ export default function HeroSection() {
         href="https://wa.me/919876543210"
         target="_blank"
         rel="noopener noreferrer"
-        className="fixed bottom-6 right-6 z-50 bg-[#25D366] text-primary-foreground w-14 h-14 rounded-full flex items-center justify-center shadow-lg animate-pulse-glow hover:scale-110 transition-transform"
+        className="fixed bottom-5 right-5 sm:bottom-6 sm:right-6 z-50 bg-[#25D366] text-white w-12 h-12 sm:w-14 sm:h-14 rounded-full flex items-center justify-center shadow-lg animate-pulse-glow hover:scale-110 active:scale-95 transition-transform touch-target"
       >
-        <MessageCircle className="w-6 h-6" />
+        <MessageCircle className="w-5 h-5 sm:w-6 sm:h-6" />
       </a>
     </section>
   );
