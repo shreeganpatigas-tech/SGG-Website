@@ -2,15 +2,25 @@ import { motion, useInView } from "framer-motion";
 import { useRef } from "react";
 import { Shield, Zap, Clock, Award } from "lucide-react";
 
-function FadeIn({ children, className = "", delay = 0 }: { children: React.ReactNode; className?: string; delay?: number }) {
+function SlideIn({ children, className = "", delay = 0, direction = "up" }: { children: React.ReactNode; className?: string; delay?: number; direction?: "up" | "left" | "right" }) {
   const ref = useRef(null);
   const inView = useInView(ref, { once: true, margin: "-50px" });
+  
+  const getInitial = () => {
+    switch (direction) {
+      case "left": return { opacity: 0, x: -50 };
+      case "right": return { opacity: 0, x: 50 };
+      case "up": return { opacity: 0, y: 30 };
+      default: return { opacity: 0, y: 30 };
+    }
+  };
+
   return (
     <motion.div
       ref={ref}
-      initial={{ opacity: 0, y: 25 }}
-      animate={inView ? { opacity: 1, y: 0 } : {}}
-      transition={{ duration: 0.5, delay, ease: "easeOut" as const }}
+      initial={getInitial()}
+      animate={inView ? { opacity: 1, x: 0, y: 0 } : {}}
+      transition={{ duration: 0.6, delay, ease: "easeOut" as const }}
       className={className}
     >
       {children}
@@ -22,14 +32,14 @@ const pillars = [
   {
     icon: Shield,
     title: "Zero-Failure Supply",
-    desc: "27 years without a single safety incident. Our track record is our promise.",
+    desc: "30 years without a single safety incident. Our track record is our promise.",
     color: "from-emerald-500/20 to-emerald-500/5",
     iconColor: "text-emerald-400",
     borderColor: "border-emerald-500/25",
   },
   {
     icon: Zap,
-    title: "Precision Delivery",
+    title: "On-time delivery",
     desc: "GPS-tracked fleet ensuring on-time delivery across manufacturing & healthcare.",
     color: "from-amber-500/20 to-amber-500/5",
     iconColor: "text-amber-400",
@@ -37,7 +47,7 @@ const pillars = [
   },
   {
     icon: Clock,
-    title: "24/7 Operations",
+    title: "Safety is our main key",
     desc: "Round-the-clock availability because your operations never sleep.",
     color: "from-blue-500/20 to-blue-500/5",
     iconColor: "text-blue-400",
@@ -55,7 +65,7 @@ export default function AboutSection() {
       <div className="max-w-7xl mx-auto relative z-10">
         <div className="grid lg:grid-cols-2 gap-10 sm:gap-12 lg:gap-16 items-center">
           {/* Left: Visual */}
-          <FadeIn>
+          <SlideIn direction="left">
             <div className="relative">
               <div className="aspect-[4/3] rounded-2xl sm:rounded-3xl overflow-hidden border border-white/10 relative">
                 <div className="w-full h-full bg-gradient-to-br from-primary/15 via-background to-accent/10 flex items-center justify-center relative">
@@ -90,15 +100,15 @@ export default function AboutSection() {
                            shadow-2xl rounded-2xl p-4 sm:p-5
                            max-w-[180px] sm:max-w-[220px]"
               >
-                <div className="font-mono text-2xl sm:text-3xl font-bold text-primary mb-0.5">27+</div>
+                <div className="font-mono text-2xl sm:text-3xl font-bold text-primary mb-0.5">30+</div>
                 <div className="text-[11px] sm:text-xs text-white/70 leading-snug">Years of excellence in gas infrastructure</div>
               </motion.div>
             </div>
-          </FadeIn>
+          </SlideIn>
 
           {/* Right: Content */}
           <div className="mt-6 lg:mt-0">
-            <FadeIn delay={0.1}>
+            <SlideIn delay={0.1} direction="right">
               <span className="text-primary font-mono text-xs sm:text-sm uppercase tracking-[0.2em]">About SGG</span>
               <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold mt-2 sm:mt-3 mb-4 sm:mb-6 text-white leading-tight">
                 The invisible backbone of Indian Industry.
@@ -108,12 +118,12 @@ export default function AboutSection() {
                 We manufacture, purify, store, and deliver industrial &amp; medical gases with
                 uncompromising precision to hospitals, factories, and fabrication units across India.
               </p>
-            </FadeIn>
+            </SlideIn>
 
             {/* Pillar cards */}
             <div className="space-y-3 sm:space-y-4">
               {pillars.map((p, i) => (
-                <FadeIn key={p.title} delay={0.2 + i * 0.1}>
+                <SlideIn key={p.title} delay={0.2 + i * 0.1} direction="right">
                   <div className={`flex gap-3 sm:gap-4 items-start p-3 sm:p-4 rounded-xl sm:rounded-2xl
                                    border ${p.borderColor} bg-gradient-to-r ${p.color}
                                    group active:scale-[0.99] transition-all duration-300
@@ -128,7 +138,7 @@ export default function AboutSection() {
                       <p className="text-white/60 text-xs sm:text-sm leading-relaxed">{p.desc}</p>
                     </div>
                   </div>
-                </FadeIn>
+                </SlideIn>
               ))}
             </div>
           </div>

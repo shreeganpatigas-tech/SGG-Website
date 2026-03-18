@@ -4,21 +4,35 @@ import { Button } from "@/components/ui/button";
 import { MapPin, Phone, Mail, Clock, Send } from "lucide-react";
 
 const contactInfo = [
-  { icon: MapPin, label: "Address", value: "Plot No. 12, Industrial Area, Pune, MH 411001" },
-  { icon: Phone, label: "Phone", value: "+91 98765 43210", href: "tel:+919876543210" },
-  { icon: Mail, label: "Email", value: "info@sggastech.com", href: "mailto:info@sggastech.com" },
-  { icon: Clock, label: "Hours", value: "24/7 · 365 Days" },
+  { icon: MapPin, label: "Address", value: "Shop No.1, Near NDC College, Burhar, Shahdol, MP, 484110" },
+  { icon: Phone, label: "Phone", value: "+91 7987594387", href: "https://wa.me/917987594387" },
+  { icon: Mail, label: "Email", value: "shreeganpatigastech@gmail.com", href: "mailto:shreeganpatigastech@gmail.com" },
+  { icon: Clock, label: "Hours", value: "9 AM to 7 PM" },
 ];
 
 export default function ContactSection() {
   const ref = useRef(null);
   const inView = useInView(ref, { once: true, margin: "-60px" });
   const [submitted, setSubmitted] = useState(false);
+  const [formData, setFormData] = useState({ email: "", phone: "", gas: "", message: "" });
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     setSubmitted(true);
-    setTimeout(() => setSubmitted(false), 3000);
+    
+    const text = `New Enquiry from Website:
+Gas Required: ${formData.gas || 'Not specified'}
+Email: ${formData.email}
+Phone: ${formData.phone}
+
+Message: ${formData.message}`;
+    
+    window.open(`https://wa.me/917987594387?text=${encodeURIComponent(text)}`, "_blank");
+
+    setTimeout(() => {
+      setSubmitted(false);
+      setFormData({ email: "", phone: "", gas: "", message: "" });
+    }, 3000);
   };
 
   const inputClass = `w-full bg-white/[0.04] border border-white/10 rounded-xl
@@ -47,8 +61,8 @@ export default function ContactSection() {
         <div className="grid lg:grid-cols-12 gap-5 sm:gap-8">
           {/* Left: Info */}
           <motion.div
-            initial={{ opacity: 0, y: 15 }}
-            whileInView={{ opacity: 1, y: 0 }}
+            initial={{ opacity: 0, x: -50 }}
+            whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.4 }}
             className="lg:col-span-5"
@@ -84,23 +98,16 @@ export default function ContactSection() {
             </div>
 
             {/* Map */}
-            <div className="rounded-xl overflow-hidden aspect-video border border-white/5 bg-white/[0.02] hidden sm:block">
-              <iframe
-                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d121058.92836999874!2d73.78056437912922!3d18.524766496218465!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3bc2bf2e67461101%3A0x828d43bf9d9ee343!2sPune%2C%20Maharashtra!5e0!3m2!1sen!2sin!4v1700000000000"
-                width="100%"
-                height="100%"
-                style={{ border: 0, filter: "invert(0.9) hue-rotate(180deg) saturate(0.3)" }}
-                allowFullScreen
-                loading="lazy"
-                title="SGG Location"
-              />
+            <div className="rounded-xl p-4 sm:p-5 border border-white/5 bg-white/[0.02] text-sm text-white/70">
+              <h4 className="font-bold text-white mb-2">Upcoming Plants</h4>
+              <p>Raigarh (CG), Bijuri (MP), Koderma (JH), Chopan (UP), Durg (CG)</p>
             </div>
           </motion.div>
 
           {/* Right: Form */}
           <motion.div
-            initial={{ opacity: 0, y: 15 }}
-            whileInView={{ opacity: 1, y: 0 }}
+            initial={{ opacity: 0, x: 50 }}
+            whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.4, delay: 0.1 }}
             className="lg:col-span-7"
@@ -112,43 +119,32 @@ export default function ContactSection() {
             >
               <div className="grid grid-cols-2 gap-3 sm:gap-4">
                 <div className="space-y-1">
-                  <label className="text-[10px] sm:text-xs text-white/60 font-medium">Full Name</label>
-                  <input type="text" required className={inputClass} placeholder="Name" />
-                </div>
-                <div className="space-y-1">
-                  <label className="text-[10px] sm:text-xs text-white/60 font-medium">Company</label>
-                  <input type="text" className={inputClass} placeholder="Company" />
-                </div>
-              </div>
-
-              <div className="grid grid-cols-2 gap-3 sm:gap-4">
-                <div className="space-y-1">
                   <label className="text-[10px] sm:text-xs text-white/60 font-medium">Email</label>
-                  <input type="email" required className={inputClass} placeholder="Email" />
+                  <input type="email" required className={inputClass} placeholder="Email" value={formData.email} onChange={(e) => setFormData({...formData, email: e.target.value})} />
                 </div>
                 <div className="space-y-1">
                   <label className="text-[10px] sm:text-xs text-white/60 font-medium">Phone</label>
-                  <input type="tel" required className={inputClass} placeholder="Phone" />
+                  <input type="tel" required className={inputClass} placeholder="Phone" value={formData.phone} onChange={(e) => setFormData({...formData, phone: e.target.value})} />
                 </div>
               </div>
 
               <div className="space-y-1">
                 <label className="text-[10px] sm:text-xs text-white/60 font-medium">Gas Required</label>
-                <select className={inputClass}>
-                  <option value="">Select gas</option>
-                  <option>Oxygen</option>
-                  <option>Argon</option>
-                  <option>Carbon Dioxide</option>
-                  <option>Nitrogen</option>
-                  <option>Nano Cut LPG</option>
-                  <option>Cylinder Refilling</option>
-                  <option>Other</option>
+                <select className={inputClass} value={formData.gas} onChange={(e) => setFormData({...formData, gas: e.target.value})}>
+                  <option value="" className="bg-slate-900 text-white">Select gas</option>
+                  <option className="bg-slate-900 text-white">Oxygen</option>
+                  <option className="bg-slate-900 text-white">Argon</option>
+                  <option className="bg-slate-900 text-white">Carbon Dioxide</option>
+                  <option className="bg-slate-900 text-white">Nitrogen</option>
+                  <option className="bg-slate-900 text-white">LPG Commercial</option>
+                  <option className="bg-slate-900 text-white">Cylinder Refilling</option>
+                  <option className="bg-slate-900 text-white">Other</option>
                 </select>
               </div>
 
               <div className="space-y-1">
                 <label className="text-[10px] sm:text-xs text-white/40 font-medium">Message</label>
-                <textarea rows={3} className={`${inputClass} resize-none`} placeholder="Your requirements..." />
+                <textarea rows={3} className={`${inputClass} resize-none`} placeholder="Your requirements..." value={formData.message} onChange={(e) => setFormData({...formData, message: e.target.value})} />
               </div>
 
               <Button

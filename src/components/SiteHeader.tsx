@@ -41,8 +41,8 @@ export default function SiteHeader() {
             : "glass-card"
         }`}
       >
-        <a href="#hero" className="font-display font-bold text-base sm:text-lg tracking-tight text-white">
-          SGG<span className="text-primary">.</span>
+        <a href="#hero" className="flex items-center">
+          <img src="/logosgg.png" alt="SG Gastech" className="h-14 sm:h-16 md:h-20 w-auto bg-white/50 p-1.5 rounded-lg" />
         </a>
 
         {/* Desktop nav */}
@@ -60,11 +60,11 @@ export default function SiteHeader() {
         </nav>
 
         <div className="hidden md:flex items-center gap-3">
-          <a href="tel:+919876543210" className="text-white/60 hover:text-primary transition-colors touch-target flex items-center justify-center">
+          <a href="https://wa.me/917987594387" className="text-white/60 hover:text-primary transition-colors touch-target flex items-center justify-center" target="_blank" rel="noopener noreferrer">
             <Phone className="w-4 h-4" />
           </a>
           <Button variant="hero" size="sm" className="touch-ripple" asChild>
-            <a href="#contact">Get a Quote</a>
+            <a href="https://wa.me/917987594387" target="_blank" rel="noopener noreferrer">Get a Quote</a>
           </Button>
         </div>
 
@@ -117,7 +117,7 @@ export default function SiteHeader() {
                   transition={{ delay: 0.35 }}
                 >
                   <Button variant="hero" size="lg" className="mt-3 w-full touch-ripple active:scale-[0.97]" asChild>
-                    <a href="#contact" onClick={() => setOpen(false)}>Get a Quote</a>
+                    <a href="https://wa.me/917987594387" onClick={() => setOpen(false)} target="_blank" rel="noopener noreferrer">Get a Quote</a>
                   </Button>
                 </motion.div>
               </nav>

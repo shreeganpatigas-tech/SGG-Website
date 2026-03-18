@@ -5,10 +5,10 @@ import { Wind, Flame, Snowflake, Atom, Droplets, RotateCcw, ChevronLeft, Chevron
 
 const products = [
   {
-    name: "Oxygen",
+    name: "Oxygen 99.9%",
     formula: "O₂",
     icon: Wind,
-    purity: "99.5%",
+    purity: "99.9%",
     desc: "Medical & industrial grade oxygen for hospitals, welding, and cutting operations.",
     accentColor: "#3b82f6",
     tagColor: "bg-blue-500/10 text-blue-400 border-blue-500/20",
@@ -41,7 +41,7 @@ const products = [
     tagColor: "bg-emerald-500/10 text-emerald-400 border-emerald-500/20",
   },
   {
-    name: "Nano Cut LPG",
+    name: "LPG Commercial",
     formula: "LPG",
     icon: Flame,
     purity: "Premium",
@@ -68,8 +68,8 @@ function ProductCard({ product, index }: { product: typeof products[0]; index: n
   return (
     <motion.div
       ref={ref}
-      initial={{ opacity: 0, y: 20 }}
-      animate={inView ? { opacity: 1, y: 0 } : {}}
+      initial={{ opacity: 0, x: 50 }}
+      animate={inView ? { opacity: 1, x: 0 } : {}}
       transition={{ duration: 0.35, delay: index * 0.06 }}
       className="relative overflow-hidden rounded-2xl
                  bg-white/[0.02] backdrop-blur-sm
@@ -97,8 +97,7 @@ function ProductCard({ product, index }: { product: typeof products[0]; index: n
           <span className="w-1.5 h-1.5 rounded-full animate-pulse shrink-0" style={{ background: product.accentColor }} />
           <span className="font-mono text-[11px] sm:text-xs" style={{ color: product.accentColor }}>Purity: {product.purity}</span>
         </div>
-        <p className="text-white/55 text-xs sm:text-sm leading-relaxed mb-3 sm:mb-4">{product.desc}</p>
-        <a href="#contact" className="inline-flex items-center gap-1 text-xs sm:text-sm font-semibold" style={{ color: product.accentColor }}>
+        <a href={`https://wa.me/917987594387?text=${encodeURIComponent(`Hi SGG, I would like to request a quote for ${product.name}.`)}`} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1 text-xs sm:text-sm font-semibold" style={{ color: product.accentColor }}>
           Request Quote <ArrowRight className="w-3 h-3 sm:w-3.5 sm:h-3.5" />
         </a>
       </div>
@@ -125,7 +124,7 @@ function MobileCarousel() {
       <div onTouchStart={handleTouchStart} onTouchEnd={handleTouchEnd}>
         <motion.div
           key={current}
-          initial={{ opacity: 0, x: 40 }}
+          initial={{ opacity: 0, x: 50 }}
           animate={{ opacity: 1, x: 0 }}
           transition={{ duration: 0.2 }}
         >
@@ -168,8 +167,8 @@ export default function ProductsSection() {
       <div className="max-w-7xl mx-auto">
         <motion.div
           ref={ref}
-          initial={{ opacity: 0, y: 20 }}
-          animate={inView ? { opacity: 1, y: 0 } : {}}
+          initial={{ opacity: 0, x: -50 }}
+          animate={inView ? { opacity: 1, x: 0 } : {}}
           transition={{ duration: 0.5 }}
           className="text-center mb-8 sm:mb-12"
         >

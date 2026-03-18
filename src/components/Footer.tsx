@@ -19,10 +19,10 @@ export default function Footer() {
         {/* Top row */}
         <div className="flex flex-col sm:flex-row justify-between items-center gap-4 sm:gap-6 mb-5 sm:mb-6">
           <div className="text-center sm:text-left">
-            <span className="font-display font-bold text-base sm:text-lg text-white">
-              SGG<span className="text-primary">.</span>
+            <span className="flex items-center justify-center sm:justify-start">
+              <img src="/logosgg.png" alt="SG Gastech" className="h-20 sm:h-28 w-auto bg-white/50 p-2 rounded-xl drop-shadow-lg" />
             </span>
-            <p className="text-[10px] sm:text-xs text-white/50 mt-0.5">Shree Ganpati Gastech Pvt. Ltd.</p>
+            <p className="text-[10px] sm:text-xs text-white/50 mt-1.5">Shree Ganpati Gastech Pvt. Ltd.</p>
           </div>
 
           {/* Nav — wrapping flex */}
@@ -41,9 +41,14 @@ export default function Footer() {
 
         {/* Bottom row */}
         <div className="flex flex-col sm:flex-row justify-between items-center gap-3">
-          <VisitorCounter />
-          <p className="text-[9px] sm:text-[10px] text-white/45">
-            © {new Date().getFullYear()} SGG. All rights reserved.
+          <div className="flex flex-col sm:flex-row items-center gap-2 sm:gap-4">
+            <VisitorCounter />
+            <p className="text-[9px] sm:text-[10px] text-white/45">
+              Built by <a href="https://www.github.com/UshnishG" target="_blank" rel="noopener noreferrer" className="hover:text-white transition-colors underline decoration-white/20 underline-offset-2">UshnishG</a>
+            </p>
+          </div>
+          <p className="text-[9px] sm:text-[10px] text-white/45 text-center sm:text-right">
+            © {new Date().getFullYear()} SGG™. All rights reserved.
           </p>
         </div>
       </div>

@@ -4,20 +4,15 @@ import { Check, ShieldCheck } from "lucide-react";
 
 const certs = [
   "ISO 9001:2015",
-  "ISO 14001:2015",
-  "ISO 45001:2018",
-  "BIS Certified",
   "PESO Approved",
-  "NABL Accredited",
   "GMP Compliant",
-  "Drug License",
+  "Drug Licence",
 ];
 
 const standards = [
-  "All cylinders tested at 250 bar hydraulic pressure",
+  "All cylinders tested at 150 Bar hydraulic pressure",
   "Real-time gas purity monitoring systems",
   "CCTV-monitored filling stations",
-  "Complete batch traceability for every cylinder",
   "Trained & certified handling team",
 ];
 
@@ -46,8 +41,8 @@ export default function SafetySection() {
       <div className="max-w-7xl mx-auto">
         <motion.div
           ref={ref}
-          initial={{ opacity: 0, y: 20 }}
-          animate={inView ? { opacity: 1, y: 0 } : {}}
+          initial={{ opacity: 0, x: -50 }}
+          animate={inView ? { opacity: 1, x: 0 } : {}}
           transition={{ duration: 0.5 }}
           className="text-center mb-8 sm:mb-12"
         >
@@ -77,26 +72,24 @@ export default function SafetySection() {
             ))}
           </div>
 
-          {/* Desktop: marquee */}
-          <div className="hidden sm:block overflow-hidden py-2">
-            <div className="flex animate-marquee whitespace-nowrap">
-              {[...certs, ...certs].map((c, i) => (
-                <span
-                  key={i}
-                  className="inline-flex items-center gap-1.5 mx-3 px-4 py-2 rounded-full text-sm font-medium text-white/90 border border-white/10 bg-white/[0.02] shrink-0"
-                >
-                  <span className="w-1.5 h-1.5 rounded-full bg-primary animate-pulse" />
-                  {c}
-                </span>
-              ))}
-            </div>
+          {/* Desktop: static centered */}
+          <div className="hidden sm:flex justify-center flex-wrap py-2 gap-4">
+            {certs.map((c, i) => (
+              <span
+                key={i}
+                className="inline-flex items-center gap-1.5 px-4 py-2 rounded-full text-sm font-medium text-white/90 border border-white/10 bg-white/[0.02]"
+              >
+                <span className="w-1.5 h-1.5 rounded-full bg-primary animate-pulse" />
+                {c}
+              </span>
+            ))}
           </div>
         </div>
 
         {/* Standards card */}
         <motion.div
-          initial={{ opacity: 0, y: 15 }}
-          whileInView={{ opacity: 1, y: 0 }}
+          initial={{ opacity: 0, x: 50 }}
+          whileInView={{ opacity: 1, x: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.5 }}
           className="max-w-2xl mx-auto rounded-2xl border border-white/5 bg-white/[0.02] p-4 sm:p-6 md:p-8"

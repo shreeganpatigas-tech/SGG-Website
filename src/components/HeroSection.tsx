@@ -175,8 +175,8 @@ export default function HeroSection() {
       </motion.div>
 
       {/* Dark overlay */}
-      <div className="absolute inset-0 bg-gradient-to-r from-black/85 via-black/70 to-black/40 md:from-black/80 md:via-black/65 md:to-black/40" />
-      <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-background" />
+      <div className="absolute inset-0 bg-gradient-to-r from-black/70 via-black/50 to-black/20 md:from-black/60 md:via-black/40 md:to-transparent" />
+      <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-background/90" />
 
       {/* Mouse glow (desktop only) */}
       {mouse.active && (
@@ -217,9 +217,9 @@ export default function HeroSection() {
             transition={{ duration: 0.7, delay: 0.4, ease: "easeOut" as const }}
             className="text-3xl sm:text-4xl md:text-6xl lg:text-7xl xl:text-8xl font-black leading-[1.05] sm:leading-[1] mb-5 sm:mb-8 text-white"
           >
-            Reliable Industrial &{" "}
+            High purity medical and{" "}
             <span className="text-gradient-accent">
-              Medical Gas Supply.
+              industrial gas.
             </span>
           </motion.h1>
 
@@ -231,7 +231,7 @@ export default function HeroSection() {
             className="text-sm sm:text-base md:text-lg mb-8 sm:mb-10 max-w-2xl text-white/70"
           >
             Powering industries and saving lives with premium quality gases.
-            SGG provides high-purity Oxygen, Argon, and CO₂ with 24/7 logistical support.
+            SGG provides high-purity Oxygen, Argon, and CO₂.
           </motion.p>
 
           {/* CTAs — stacked on small mobile, row on sm+ */}
@@ -257,7 +257,7 @@ export default function HeroSection() {
               className="px-6 sm:px-8 py-5 sm:py-6 text-sm sm:text-base font-bold uppercase tracking-wider touch-ripple active:scale-[0.97] transition-transform"
               asChild
             >
-              <a href="#contact">Contact Us</a>
+              <a href="https://wa.me/917987594387" target="_blank" rel="noopener noreferrer">Contact Us</a>
             </Button>
           </motion.div>
 
@@ -270,7 +270,7 @@ export default function HeroSection() {
           >
             {[
               { value: 99.99, suffix: "%", label: "Purity" },
-              { value: 27, suffix: "+", label: "Years" },
+              { value: 30, suffix: "+", label: "Years" },
               { value: 500, suffix: "+", label: "Clients" },
             ].map((s) => (
               <div key={s.label} className="border-l-2 border-primary/50 pl-3 sm:pl-4">
@@ -297,7 +297,7 @@ export default function HeroSection() {
 
       {/* WhatsApp FAB */}
       <a
-        href="https://wa.me/919876543210"
+        href="https://wa.me/917987594387"
         target="_blank"
         rel="noopener noreferrer"
         className="fixed bottom-5 right-5 sm:bottom-6 sm:right-6 z-50 bg-[#25D366] text-white w-12 h-12 sm:w-14 sm:h-14 rounded-full flex items-center justify-center shadow-lg animate-pulse-glow hover:scale-110 active:scale-95 transition-transform touch-target"

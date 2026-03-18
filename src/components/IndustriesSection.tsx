@@ -8,9 +8,9 @@ const industries = [
     label: "Mfg",
     fullLabel: "Manufacturing",
     icon: Factory,
-    title: "Steel & Manufacturing",
-    desc: "Oxygen and Argon for furnaces, heat treatment, and laser cutting. We supply major steel plants with uninterrupted bulk gas delivery.",
-    stats: ["200+ Plants", "Bulk Supply", "24/7 Pipeline"],
+    title: "Steel and Thermal Manufacturing",
+    desc: "Industrial gases for furnaces and heat treatment. Supplying to major steel and thermal plants.",
+    stats: ["200+ Plants", "Bulk Supply", "On-demand supply"],
     number: "01",
   },
   {
@@ -29,8 +29,8 @@ const industries = [
     fullLabel: "Fabrication",
     icon: Wrench,
     title: "Welding & Fabrication",
-    desc: "Argon, CO₂, and Nano Cut LPG for precision welding and metal cutting with superior flame quality.",
-    stats: ["Mixed Gas", "Nano Cut", "On-Site"],
+    desc: "Industrial gas and commercial LPG.",
+    stats: ["Mixed Gas", "LPG Commercial", "On-Site"],
     number: "03",
   },
   {
@@ -69,7 +69,13 @@ export default function IndustriesSection() {
         {/* Mobile: inline tabs that wrap · Desktop: sidebar */}
         <div className="grid md:grid-cols-12 gap-3 sm:gap-5">
           {/* Tabs — wrapping grid on mobile (no horizontal scroll!) */}
-          <div className="md:col-span-4 lg:col-span-3">
+          <motion.div 
+            className="md:col-span-4 lg:col-span-3"
+            initial={{ opacity: 0, x: -40 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.5, delay: 0.1 }}
+          >
             <div className="grid grid-cols-4 md:grid-cols-1 gap-1.5 sm:gap-2">
               {industries.map((ind) => (
                 <button
@@ -91,17 +97,17 @@ export default function IndustriesSection() {
                 </button>
               ))}
             </div>
-          </div>
+          </motion.div>
 
           {/* Content panel */}
           <div className="md:col-span-8 lg:col-span-9">
             <AnimatePresence mode="wait">
               <motion.div
                 key={active}
-                initial={{ opacity: 0, y: 10 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: -10 }}
-                transition={{ duration: 0.25 }}
+                initial={{ opacity: 0, x: 30 }}
+                animate={{ opacity: 1, x: 0 }}
+                exit={{ opacity: 0, x: -30 }}
+                transition={{ duration: 0.3 }}
                 className="rounded-2xl p-4 sm:p-6 md:p-8
                            border border-white/5 bg-white/[0.02]
                            relative overflow-hidden"
@@ -133,7 +139,7 @@ export default function IndustriesSection() {
                     ))}
                   </div>
 
-                  <a href="#contact" className="inline-flex items-center gap-1.5 text-primary text-xs sm:text-sm font-semibold">
+                  <a href={`https://wa.me/917987594387?text=${encodeURIComponent(`Hi SGG, I am looking for gas supply for the ${current.title} sector.`)}`} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1.5 text-primary text-xs sm:text-sm font-semibold">
                     Get Supply <ArrowRight className="w-3.5 h-3.5" />
                   </a>
                 </div>
