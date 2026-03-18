@@ -44,7 +44,7 @@ export default function Footer() {
           <div className="flex flex-col sm:flex-row items-center gap-2 sm:gap-4">
             <VisitorCounter />
             <p className="text-[9px] sm:text-[10px] text-white/45">
-              Built by <a href="https://www.github.com/UshnishG" target="_blank" rel="noopener noreferrer" className="hover:text-white transition-colors underline decoration-white/20 underline-offset-2">UshnishG</a>
+              Built by <a href="" target="_blank" rel="noopener noreferrer" className="hover:text-white transition-colors underline decoration-white/20 underline-offset-2">Aditya</a>
             </p>
           </div>
           <p className="text-[9px] sm:text-[10px] text-white/45 text-center sm:text-right">
