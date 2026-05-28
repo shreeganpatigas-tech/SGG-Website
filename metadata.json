@@ -1,0 +1,6 @@
+{
+  "name": "SGG Gas Dynamics — Shree Ganpati Gastech Private Limited",
+  "description": "Premium 3D Enterprise Industrial Website for Shree Ganpati Gastech Private Limited (SGG Gas Dynamics), manufacturers and suppliers of Oxygen, Argon, Nitrogen, LPG, and medical gases in Madhya Pradesh, India.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

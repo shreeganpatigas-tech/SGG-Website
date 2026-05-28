@@ -1,5 +1,0 @@
-User-agent: *
-Allow: /
-
-# Sitemap Location
-Sitemap: https://www.shreeganpatigastech.com/sitemap.xml
